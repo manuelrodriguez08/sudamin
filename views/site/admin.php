@@ -1,1 +1,1 @@
-<?php echo "admin"; ?> 
+<?php echo Yii::$app->user->identity->nombres; ?> 

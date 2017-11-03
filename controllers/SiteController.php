@@ -16,54 +16,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-      public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'user', 'admin'],
-                'rules' => [
-                    [
-                        //El administrador tiene permisos sobre las siguientes acciones
-                        'actions' => ['logout', 'admin'],
-                        //Esta propiedad establece que tiene permisos
-                        'allow' => true,
-                        //Usuarios autenticados, el signo ? es para invitados
-                        'roles' => ['@'],
-                        //Este método nos permite crear un filtro sobre la identidad del usuario
-                        //y así establecer si tiene permisos o no
-                        'matchCallback' => function ($rule, $action) {
-                            //Llamada al método que comprueba si es un administrador
-                            return User::isUserAdmin(Yii::$app->user->identity->id);
-                        },
-                    ],
-                    [
-                       //Los usuarios simples tienen permisos sobre las siguientes acciones
-                       'actions' => ['logout', 'user'],
-                       //Esta propiedad establece que tiene permisos
-                       'allow' => true,
-                       //Usuarios autenticados, el signo ? es para invitados
-                       'roles' => ['@'],
-                       //Este método nos permite crear un filtro sobre la identidad del usuario
-                       //y así establecer si tiene permisos o no
-                       'matchCallback' => function ($rule, $action) {
-                          //Llamada al método que comprueba si es un usuario simple
-                          return User::isUserSimple(Yii::$app->user->identity->id);
-                      },
-                   ],
-                ],
-            ],
-     //Controla el modo en que se accede a las acciones, en este ejemplo a la acción logout
-     //sólo se puede acceder a través del método post
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
+      
     /**
      * @inheritdoc
      */
@@ -173,4 +126,49 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+	
+	public function actionCrearpermiso(){
+	
+	   $auth = Yii::$app->authManager;
+    // Author -> index/create/view
+    // Admin -> {Author} and update/delete -> index/create/view/update/delete
+    
+    $index = $auth->createPermission('Persona/index');
+	$index->description = 'Create a index';
+    $auth->add($index);
+		
+    $create = $auth->createPermission('Persona/create');
+	$create->description = 'Create a index';
+    $auth->add($create);
+    $view = $auth->createPermission('Persona/view');
+	$view->description = 'Create a index';
+    $auth->add($view);
+    
+    $update = $auth->createPermission('Persona/update');
+	$update->description = 'Create a index';
+    $auth->add($update);
+    $delete = $auth->createPermission('Persona/delete');
+	$delete->description = 'Create a index';
+    $auth->add($delete);
+    
+    // add "author" role and give this role the "createPost" permission
+    $author = $auth->createRole('author');
+    $auth->add($author);
+    $auth->addChild($author, $index);
+    $auth->addChild($author, $create);
+    $auth->addChild($author, $view);
+    
+    // add "admin" role and give this role the "updatePost" permission
+    // as well as the permissions of the "author" role
+    $admin = $auth->createRole('admin');
+    $auth->add($admin);
+    $auth->addChild($admin, $author);
+    $auth->addChild($admin, $update);
+    $auth->addChild($admin, $delete);
+	
+	$auth->assign($author, 2);
+    $auth->assign($admin, 1);
+	
+	
+	}
 }

@@ -8,6 +8,7 @@ use app\models\PersonaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * PersonaController implements the CRUD actions for Personas model.
@@ -26,6 +27,24 @@ class PersonaController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+			
+			 'access' => [
+                'class' => AccessControl::className(),
+				 'rules' => [
+				    [
+					 	  'allow' => true,
+                        'actions' => ['index', 'view'],
+                        // loginBackend permission only allows staff and admin to log into from backend
+                        'roles' => ['admin']
+					],
+					[
+					    'allow' => true,
+                        'actions' => ['create', 'update'],
+                        // loginBackend permission only allows staff and admin to log into from backend
+                        'roles' => ['Author']
+					],
+				 ]
+				]
         ];
     }
 
