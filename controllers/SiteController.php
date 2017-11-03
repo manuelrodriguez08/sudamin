@@ -58,6 +58,7 @@ class SiteController extends Controller
    
             if (User::mtdAdmin(Yii::$app->user->identity->id))
                    {
+					   
                    return $this->redirect(["site/admin"]);
                    }
                    else
@@ -86,8 +87,6 @@ class SiteController extends Controller
 
     public function actionAdmin()
     {
-        
-
         return $this->render('admin');
     }
     public function actionUser()
@@ -133,7 +132,7 @@ class SiteController extends Controller
     // Author -> index/create/view
     // Admin -> {Author} and update/delete -> index/create/view/update/delete
     
-    $index = $auth->createPermission('Persona/index');
+    /*$index = $auth->createPermission('Persona/index');
 	$index->description = 'Create a index';
     $auth->add($index);
 		
@@ -149,7 +148,7 @@ class SiteController extends Controller
     $auth->add($update);
     $delete = $auth->createPermission('Persona/delete');
 	$delete->description = 'Create a index';
-    $auth->add($delete);
+    $auth->add($delete);*/
     
     // add "author" role and give this role the "createPost" permission
     $author = $auth->createRole('author');

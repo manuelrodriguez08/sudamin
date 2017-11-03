@@ -51,7 +51,7 @@ class Personas extends \yii\db\ActiveRecord implements IdentityInterface
             [['celular', 'correo'], 'string', 'max' => 20],
             [['usuario'], 'string', 'max' => 10],
             [['documento'], 'unique'],
-            [['perfil'], 'exist', 'skipOnError' => true, 'targetClass' => Perfiles::className(), 'targetAttribute' => ['perfil' => 'id_perfil']],
+            [['perfil'], 'exist', 'skipOnError' => false, 'targetClass' => Perfiles::className(), 'targetAttribute' => ['perfil' => 'id_perfil']],
         ];
     }
 
@@ -121,7 +121,7 @@ class Personas extends \yii\db\ActiveRecord implements IdentityInterface
 
         public function getId()
     {
-        return $this->id_persona;
+        return $this->perfil;
     }
 
     /**
