@@ -9,7 +9,6 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\User;
 
 class SiteController extends Controller
 {
@@ -55,21 +54,11 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-   
-            if (User::mtdAdmin(Yii::$app->user->identity->id))
-                   {
-					   
-                   return $this->redirect(["site/admin"]);
-                   }
-                   else
-                   {
-                     return $this->redirect(["site/user"]);
-                   }
-       
+            return $this->redirect(["site/index"]);
         } else {
-                return $this->render('login', [
-                    'model' => $model,
-                ]);
+			return $this->render('login', [
+				'model' => $model,
+			]);
         }
     }
 
@@ -153,17 +142,17 @@ class SiteController extends Controller
     // add "author" role and give this role the "createPost" permission
     $author = $auth->createRole('author');
     $auth->add($author);
-    $auth->addChild($author, $index);
-    $auth->addChild($author, $create);
-    $auth->addChild($author, $view);
+    //$auth->addChild($author, $index);
+    //$auth->addChild($author, $create);
+    //$auth->addChild($author, $view);
     
     // add "admin" role and give this role the "updatePost" permission
     // as well as the permissions of the "author" role
     $admin = $auth->createRole('admin');
     $auth->add($admin);
-    $auth->addChild($admin, $author);
-    $auth->addChild($admin, $update);
-    $auth->addChild($admin, $delete);
+    //$auth->addChild($admin, $author);
+    //$auth->addChild($admin, $update);
+    //$auth->addChild($admin, $delete);
 	
 	$auth->assign($author, 2);
     $auth->assign($admin, 1);

@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+	'language' => 'es-CO',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -16,10 +17,11 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
 		'authManager' => [
-    	'class' => 'yii\rbac\DbManager',
+    		'class' => 'yii\rbac\DbManager',
 		],
         'user' => [
             'identityClass' => 'app\models\Personas',
+			//'enableSession' => true,
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [

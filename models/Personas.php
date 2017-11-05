@@ -28,6 +28,7 @@ use yii\web\IdentityInterface;
 class Personas extends \yii\db\ActiveRecord implements IdentityInterface
 {
     public $authKey;
+	public $logged=false;
     /**
      * @inheritdoc
      */
@@ -81,7 +82,7 @@ class Personas extends \yii\db\ActiveRecord implements IdentityInterface
 
      public static function findIdentity($id)
     {
-        return static::findOne($id);
+        return Personas::findOne(['id_persona' => $id]);
     }
 
     /**
@@ -89,12 +90,12 @@ class Personas extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        return false;//static::findOne(['access_token' => $token]);
     }
 
      public static function findByUsername($username)
     {
-        $user = self::findOne(['usuario'=>$username]);
+        $user = Personas::findOne(['usuario'=>$username]);
         if($user){
             return $user;
         }
@@ -119,9 +120,12 @@ class Personas extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->authKey === $authKey;
     }
 
-        public function getId()
+    public function getId()
     {
-        return $this->perfil;
+        if($this->logged)
+			return $this->id_persona;
+		else
+			return $this->perfil;
     }
 
     /**

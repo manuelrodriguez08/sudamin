@@ -41,7 +41,7 @@ class PersonaController extends Controller
 					    'allow' => true,
                         'actions' => ['create', 'update'],
                         // loginBackend permission only allows staff and admin to log into from backend
-                        'roles' => ['Author']
+                        'roles' => ['admin']
 					],
 				 ]
 				]
